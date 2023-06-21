@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+data/eurostat_nuts2_ready.csv
+.DS_Store
+README.html
