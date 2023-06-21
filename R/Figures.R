@@ -158,7 +158,7 @@ income_groups_jee_plt <- ggplot(
   geom_line(
     mapping = aes(linetype=c_group_jee, color=c_group_jee), 
     show.legend = FALSE) +
-  scale_y_continuous(labels = label_percent(), limits = c(0.3, 1.4)) +
+  scale_y_continuous(breaks = seq(0.4, 1.4, 0.2), labels = label_percent(), limits = c(0.3, 1.5)) +
   scale_x_continuous(limits = c(1995, 2025), breaks = seq(1995, 2020, 5)) +
   scale_color_grey(start = 0.0, 0.6) +
   geom_label_repel(
