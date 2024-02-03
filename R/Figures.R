@@ -221,7 +221,8 @@ single_countries_jee <- income_growth_groups %>%
   ) +
   theme_icae() +
   theme(
-    axis.title.x = element_blank()
+    axis.title.x = element_blank(), 
+    plot.title = element_text(size=14)
   )
 single_countries_jee
 
@@ -237,13 +238,13 @@ ineq_plot <- ggarrange(
 
 ineq_plot <- annotate_figure(
   ineq_plot, 
+  top = text_grob("Income polarization in the EU"),
   bottom = text_grob("Data: World Bank; own calculation.", hjust = -0.73))
 
 ggsave(
   plot = ineq_plot, 
-  filename = here("figures/Figure-1-DevelopmentModels.pdf"), 
+  filename = here("figures/GraebnerRadKapeller_Figure1-SW.pdf"), 
   width = 9, height = 7)
-
 
 # Figure 2: challenges general -------------------------
 
@@ -344,7 +345,7 @@ challenge_plot_I <- ggarrange(
 
 ggsave(
   plot = challenge_plot_I, 
-  filename = here("figures/Figure-2-Challenge-I.pdf"),
+  filename = here("figures/GraebnerRadKapeller_Figure2-SW.pdf"),
   width = 8, height = 3)
 
 # Figure 3: challenges - Italy -------------------------
@@ -429,5 +430,5 @@ challenge_plot_II <- ggarrange(
 
 ggsave(
   plot = challenge_plot_II, 
-  filename = here("figures/Figure-3-Challenge-II.pdf"),
+  filename = here("figures/GraebnerRadKapeller_Figure3-SW.pdf"),
   width = 8, height = 3)
