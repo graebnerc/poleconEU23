@@ -121,11 +121,14 @@ income_groups_geo_plt <- income_groups_geo_final %>%
   data = ., 
   mapping = aes(
     x=year, y=gdp_rel_central, color=c_group_geo)) +
-  geom_point() + 
-  geom_line() +
+  geom_point(
+    mapping = aes(shape=c_group_geo, color=c_group_geo)) + 
+  geom_line(
+    mapping = aes(linetype=c_group_geo, color=c_group_geo), 
+    show.legend = FALSE) +
   scale_y_continuous(labels = label_percent(), limits = c(0.3, 1.4)) +
   scale_x_continuous(limits = c(1995, 2025), breaks = seq(1995, 2020, 5)) +
-  scale_color_euf(palette = "mixed") +
+  scale_color_grey(start = 0.0, 0.6) +
   geom_label_repel(
     data = dplyr::filter(
       income_groups_geo_final, 
@@ -138,7 +141,7 @@ income_groups_geo_plt <- income_groups_geo_final %>%
   labs(
     title = paste0("Deviation from average income of Central Europe" ),
     y = "Deviation (average GDP p.c. \n of Central Europe=100%)") +
-  guides(color = guide_legend(ncol = 3)) +
+  guides(color = "none", shape = guide_legend(ncol = 3)) +
   theme_icae() + 
   theme(legend.title = element_blank(),
         axis.title.x = element_blank(),
@@ -150,11 +153,14 @@ income_groups_jee_plt <- ggplot(
   data = income_groups_jee_final, 
   mapping = aes(
     x=year, y=gdp_rel_core, color=c_group_jee)) +
-  geom_point() + 
-  geom_line() +
+  geom_point(
+    mapping = aes(shape=c_group_jee, color=c_group_jee)) + 
+  geom_line(
+    mapping = aes(linetype=c_group_jee, color=c_group_jee), 
+    show.legend = FALSE) +
   scale_y_continuous(breaks = seq(0.4, 1.4, 0.2), labels = label_percent(), limits = c(0.3, 1.5)) +
   scale_x_continuous(limits = c(1995, 2025), breaks = seq(1995, 2020, 5)) +
-  scale_color_euf(palette = "mixed") +
+  scale_color_grey(start = 0.0, 0.6) +
   geom_label_repel(
     data = dplyr::filter(income_groups_jee_final, year==max_year),
     mapping = aes(x=year, y=gdp_rel_core, label=c_group_jee_lab), 
@@ -163,7 +169,7 @@ income_groups_jee_plt <- ggplot(
   labs(
     title = paste0("Deviation from average income of the Core" ),
     y = "Deviation (average GDP p.c. \n of core countries=100%)") +
-  guides(color = guide_legend(ncol = 3)) +
+  guides(color = "none", shape = guide_legend(ncol = 3)) +
   theme_icae() + 
   theme(legend.title = element_blank(),
         axis.title.x = element_blank(),
@@ -191,13 +197,14 @@ single_countries_jee <- income_growth_groups %>%
   ) +
   geom_point(
     alpha=0.25,color="white") +
-  geom_line(alpha=0.25, color=get_euf_colors("blue")) +
+  geom_line(alpha=0.25) +
   geom_line(
     mapping = aes(
       x=year, 
       y=mean_gdp, 
       group=country)
   ) +
+  scale_color_grey(aesthetics = c("color", "fill")) + 
   scale_y_continuous(
     labels = scales::label_number(scale = 0.001, suffix = "k")
   ) +
@@ -231,7 +238,7 @@ ineq_plot <- annotate_figure(
 
 ggsave(
   plot = ineq_plot, 
-  filename = here("figures/GraebnerRadKapeller_Figure1.pdf"), 
+  filename = here("figures/GraebnerRadKapeller_Figure1-SW.pdf"), 
   width = 9, height = 7)
 
 # Figure 2: challenges general -------------------------
@@ -268,8 +275,8 @@ dyn_challenge_ire_plot <- ggplot(
   data = dyn_challenge_ire, 
   aes(x=year, y=gdp_mean, color=c_group_jee)
   ) +
-  geom_line() + 
-  scale_color_euf(palette = "mixed") +
+  geom_line() + geom_point(aes(shape=c_group_jee)) +
+  scale_colour_grey() +
   scale_y_continuous(
     limits = c(0, 100000), 
     labels = number_format(scale = 0.001, suffix = "k")
@@ -308,9 +315,13 @@ local_plot_de <- ggplot() +
     mapping = aes(
       x=long, y = lat, group = group, fill=gdp_pc_mean),
     colour = "black", linewidth = 0.2) +
-  scale_color_viridis_c(
-    labels=number_format(scale = 0.001, suffix = "k"),
-    option = "D", aesthetics=c("color", "fill")) +
+  scale_color_distiller(
+    labels=number_format(
+      scale = 0.001, suffix = "k"), 
+    palette = "Greys", 
+    aesthetics=c("fill"), 
+    direction = 1
+    ) +
   labs(
     title = "The challenge of granularity in Germany",
     caption = "Data: Eurostat.") +
@@ -326,7 +337,7 @@ challenge_plot_I <- ggarrange(
 
 ggsave(
   plot = challenge_plot_I, 
-  filename = here("figures/GraebnerRadKapeller_Figure2.pdf"),
+  filename = here("figures/GraebnerRadKapeller_Figure2-SW.pdf"),
   width = 8, height = 3)
 
 # Figure 3: challenges - Italy -------------------------
@@ -352,7 +363,7 @@ dyn_challenge_ita_plot <- ggplot(
   aes(x=year, y=gdp_mean, color=c_group_jee)
 ) +
   geom_line() +
-  scale_color_euf(palette = "mixed") +
+  scale_colour_grey() +
   scale_y_continuous(
     limits = c(0, 55000), 
     labels = number_format(scale = 0.001, suffix = "k")
@@ -383,9 +394,13 @@ local_plot_ita <- ggplot() +
     mapping = aes(
       x=long, y = lat, group = group, fill=gdp_pc_mean),
     colour = "black", linewidth = 0.2) +
-  scale_color_viridis_c(
-    labels=number_format(scale = 0.001, suffix = "k"),
-    option = "D", aesthetics=c("color", "fill")) +
+  scale_color_distiller(
+    labels=number_format(
+      scale = 0.001, suffix = "k"), 
+    palette = "Greys", 
+    aesthetics=c("fill"), 
+    direction = 1
+  ) +
   labs(
     title = "The challenge of granularity in Italy",
     caption = "Data: Eurostat.") +
@@ -404,5 +419,5 @@ challenge_plot_II <- ggarrange(
 
 ggsave(
   plot = challenge_plot_II, 
-  filename = here("figures/GraebnerRadKapeller_Figure3.pdf"),
+  filename = here("figures/GraebnerRadKapeller_Figure3-SW.pdf"),
   width = 8, height = 3)
