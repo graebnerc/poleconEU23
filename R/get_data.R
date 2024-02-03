@@ -24,14 +24,6 @@ income_growth <- WDI::WDI(
   country = macro_countries) %>% 
   dplyr::select(-iso3c)
 fwrite(income_growth, file = here("data/wdi_gdp.csv"))
-# 
-# # GDP data-----------------------------
-# long_term_gdp_data <- WDI::WDI(
-#   indicator = c(
-#     "GDP_constUSD"="NY.GDP.PCAP.KD",
-#     "GDP_ppp"="NY.GDP.PCAP.PP.CD"),
-#   country = macro_countries)
-# fwrite(long_term_gdp_data, file = here("data/gdp_longterm.csv"))
 
 # Get spatial data for maps------------
 spatial_data_raw <- eurostat::get_eurostat_geospatial(
@@ -42,7 +34,8 @@ spatial_data_raw <- eurostat::get_eurostat_geospatial(
 fwrite(spatial_data_raw, file = here("data/eurostat_spatial.csv"))
 
 # Get local data for GDP values on maps----------
-local_data <- eurostat::get_eurostat(id = "nama_10r_2gdp", time_format = "num")
+local_data <- eurostat::get_eurostat(
+  id = "nama_10r_2gdp", time_format = "num")
 fwrite(local_data, file = here("data/eurostat_nuts2.csv"))
 
 local_data_hr <- local_data %>%
